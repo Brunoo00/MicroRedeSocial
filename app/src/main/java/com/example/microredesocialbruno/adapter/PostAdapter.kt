@@ -6,9 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.microredesocialbruno.databinding.PostItemBinding
 import com.example.microredesocialbruno.model.Post
 
-class PostAdapter(
-    private val posts: Array<Post>
-) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+
+    private val posts = ArrayList<Post>()
+
+    fun adicionarPosts(novosPosts: List<Post>) {
+        val posicaoInicial = posts.size
+        posts.addAll(novosPosts)
+        notifyItemRangeInserted(posicaoInicial, novosPosts.size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = PostItemBinding.inflate(
@@ -23,7 +29,8 @@ class PostAdapter(
 
     override fun getItemCount(): Int = posts.size
 
-    inner class ViewHolder(val binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: PostItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.imgPost.setImageBitmap(post.imagem)
             binding.txtDescricao.text = post.descricao

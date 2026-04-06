@@ -1,4 +1,4 @@
-package com.example.microredesocialbruno
+package com.example.microredesocialbruno.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -26,6 +26,9 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Meu Perfil"
+
         binding.btnAlterarFoto.setOnClickListener {
             galeria.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -36,5 +39,10 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

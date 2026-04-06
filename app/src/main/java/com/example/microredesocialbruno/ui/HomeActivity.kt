@@ -1,21 +1,21 @@
-package com.example.microredesocialbruno
+package com.example.microredesocialbruno.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.microredesocialbruno.adapter.PostAdapter
+import com.example.microredesocialbruno.dao.PostDAO
 import com.example.microredesocialbruno.databinding.ActivityHomeBinding
-import com.example.microredesocialbruno.model.Post
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var posts: ArrayList<Post>
     private lateinit var adapter: PostAdapter
+    private val postDAO = PostDAO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +24,14 @@ class HomeActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        configurarRecyclerView()
+
         binding.btnLogout.setOnClickListener {
             logout()
+        }
+
+        binding.btnPerfil.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
         binding.btnCarregarFeed.setOnClickListener {
@@ -33,25 +39,28 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun configurarRecyclerView() {
+        adapter = PostAdapter()
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@HomeActivity)
+            adapter = this@HomeActivity.adapter
+        }
+    }
+
     private fun carregarFeed() {
-        val db = Firebase.firestore
-        db.collection("posts").get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    posts = ArrayList()
-                    for (document in task.result.documents) {
-                        val imageString = document.data!!["imageString"].toString()
-                        val bitmap = Base64Converter.stringToBitmap(imageString)
-                        val descricao = document.data!!["descricao"].toString()
-                        posts.add(Post(descricao, bitmap))
-                    }
-                    adapter = PostAdapter(posts.toTypedArray())
-                    binding.recyclerView.apply {
-                        layoutManager = LinearLayoutManager(this@HomeActivity)
-                        adapter = this@HomeActivity.adapter
-                    }
+        postDAO.carregarPosts(
+            onSucesso = { posts ->
+                if (posts.isEmpty()) {
+                    Toast.makeText(this, "Nenhum post encontrado", Toast.LENGTH_SHORT).show()
+                } else {
+                    adapter.adicionarPosts(posts)
                 }
+            },
+            onErro = { erro ->
+                Log.e("HomeActivity", "Erro ao carregar posts: ${erro.message}")
+                Toast.makeText(this, "Erro ao carregar posts", Toast.LENGTH_SHORT).show()
             }
+        )
     }
 
     private fun logout() {

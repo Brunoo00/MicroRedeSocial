@@ -1,4 +1,4 @@
-package com.example.microredesocialbruno
+package com.example.microredesocialbruno.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,11 +16,19 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Criar Conta"
+
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding.btnRegister.setOnClickListener {
             registrarUsuario()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     private fun registrarUsuario() {
