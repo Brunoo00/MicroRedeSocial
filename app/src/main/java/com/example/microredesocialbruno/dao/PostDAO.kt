@@ -1,7 +1,7 @@
 package com.example.microredesocialbruno.dao
 
 import android.graphics.Bitmap
-import com.example.microredesocialbruno.Base64Converter
+import com.example.microredesocialbruno.helper.Base64Converter
 import com.example.microredesocialbruno.model.Post
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query

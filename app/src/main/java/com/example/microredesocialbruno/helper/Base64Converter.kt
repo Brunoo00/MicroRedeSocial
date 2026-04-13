@@ -1,4 +1,4 @@
-package com.example.microredesocialbruno
+package com.example.microredesocialbruno.helper
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
