@@ -1,4 +1,4 @@
-package com.example.microredesocialbruno
+package com.example.microredesocialbruno.helper
 
 import android.Manifest
 import android.content.Context

@@ -34,6 +34,8 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
         fun bind(post: Post) {
             binding.imgPost.setImageBitmap(post.imagem)
             binding.txtDescricao.text = post.descricao
+            binding.txtAutor.text = post.autor
+            binding.txtCidade.text = if (post.cidade.isNotEmpty()) "📍 ${post.cidade}" else ""
         }
     }
 }

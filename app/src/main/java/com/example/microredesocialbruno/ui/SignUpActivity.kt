@@ -32,11 +32,12 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun registrarUsuario() {
+        val nomeCompleto = binding.edtNomeCompleto.text.toString()
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
         val confirmPassword = binding.edtConfirmPassword.text.toString()
 
-        if (email.isEmpty() || password.isEmpty()) {
+        if (nomeCompleto.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             return
         }
@@ -50,7 +51,9 @@ class SignUpActivity : AppCompatActivity() {
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("nomeCompleto", nomeCompleto)
+                    startActivity(intent)
                     finish()
                 } else {
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.microredesocialbruno"
-        minSdk = 33
+        minSdk = 26        // ← mudei de 33 para 26 pra rodar no meu celular
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
